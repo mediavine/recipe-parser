@@ -1,6 +1,6 @@
 {
-  "name": "recipe-ingredient-parser",
-  "version": "1.5.3",
+  "name": "@mediavine/recipe-ingredient-parser",
+  "version": "2.0.0",
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

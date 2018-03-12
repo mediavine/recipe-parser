@@ -38,4 +38,5 @@ export const pluralUnits = {
   large: ['large'],
   whole: ['whole'],
   package: ['packages'],
+  stick: ['stick'],
 } as { [key: string]: string[] };

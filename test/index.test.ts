@@ -120,6 +120,9 @@ describe('recipe parser', () => {
     it('"1 pinch water"', () => {
       expect(parse('1 pinch salt').unit).to.equal('pinch');
     });
+    it('"1/3 stick of butter"', () => {
+      expect(parse('1/3 stick of butter').unit).to.equal('stick');
+    });
     it('"1 (14.5 oz) can tomatoes"', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',

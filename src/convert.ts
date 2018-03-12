@@ -54,13 +54,13 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
     const rangeParts = getAllMatches(ingredientLine, rangeRegex)
     return [rangeParts[0], ingredientLine.replace(rangeRegex, '').trim(), rangeParts[1]]
   }
-  if (ingredientLine.match(unicodeFractionRegex)) {
-    const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
-    // const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
-    if (unicodeObj[unicodePart]) {
-      return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
-    }
-  }
+  // if (ingredientLine.match(unicodeFractionRegex)) {
+  //   const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
+  //   const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
+  //   if (unicodeObj[unicodePart]) {
+  //     return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
+  //   }
+  // }
   if (ingredientLine.match(numericAndFractionRegex)) {
     return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
   }

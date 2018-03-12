@@ -20,7 +20,7 @@ export function getFirstMatch(line: string, regex: RegExp) {
 }
 
 export function getAllMatches(line: string, regex: RegExp) {
-  const matches = regex.exec(line)
+  const matches = regex.exec(line) || []
   matches.splice(0,1)
   return (matches && [...matches]) || '';
 }
@@ -56,7 +56,7 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   }
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
-    const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
+    // const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
     if (unicodeObj[unicodePart]) {
       return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
     }

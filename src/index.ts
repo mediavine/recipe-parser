@@ -32,7 +32,7 @@ function getUnit(input: string) {
 export function parse(recipeString: string) {
   const ingredientLine = recipeString.trim();
 
-  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+  let [quantity, noQuantity, maxQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
   quantity = convert.convertFromFraction(quantity);
 
@@ -48,7 +48,8 @@ export function parse(recipeString: string) {
   return {
     quantity,
     unit: !!unit ? unit : null,
-    ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
+    ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient,
+    maxQuantity
   };
 }
 
@@ -87,9 +88,9 @@ export function prettyPrintingPress(ingredient: Ingredient) {
         const len = fraction.length - 2;
         let denominator = Math.pow(10, len);
         let numerator = +fraction * denominator;
-        
+
         const divisor = gcd(numerator, denominator);
-  
+
         numerator /= divisor;
         denominator /= divisor;
         fractional = Math.floor(numerator) + '/' + Math.floor(denominator);

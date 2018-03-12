@@ -19,6 +19,12 @@ export function getFirstMatch(line: string, regex: RegExp) {
   return (match && match[0]) || '';
 }
 
+export function getAllMatches(line: string, regex: RegExp) {
+  const matches = regex.exec(line)
+  matches.splice(0,1)
+  return (matches && [...matches]) || '';
+}
+
 const unicodeObj: { [key: string]: string } = {
   '¼': '1/4',
   '½': '1/2',
@@ -41,10 +47,13 @@ const unicodeObj: { [key: string]: string } = {
 };
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
+  const rangeRegex = /^(\d+)\s?[-–]\s?(\d+)/g;
   const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|(\d+.\d+)|\d+/g;
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
-  const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
-
+  if(ingredientLine.match(rangeRegex)) {
+    const rangeParts = getAllMatches(ingredientLine, rangeRegex)
+    return [rangeParts[0], ingredientLine.replace(rangeRegex, '').trim(), rangeParts[1]]
+  }
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);

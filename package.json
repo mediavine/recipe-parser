@@ -34,5 +34,9 @@
   },
   "dependencies": {
     "@types/node": "^8.0.28"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
   }
 }

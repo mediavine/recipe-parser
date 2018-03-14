@@ -20,7 +20,36 @@ describe('recipe parser', () => {
       expect(parse('1/3 cup water').quantity).to.equal('0.333');
     });
     it('of "10-20 teaspoon water"', () => {
-      expect(parse('10-20 teaspoon water').quantity).to.equal('10-20');
+      expect(parse('10-20 teaspoon water')).to.deep.equal({
+        quantity: '10',
+        maxQuantity: '20',
+        unit: 'teaspoon',
+        ingredient: 'water'
+      });
+    });
+    it('of "10 - 20 teaspoon water"', () => {
+      expect(parse('10-20 teaspoon water')).to.deep.equal({
+        quantity: '10',
+        maxQuantity: '20',
+        unit: 'teaspoon',
+        ingredient: 'water'
+      });
+    });
+    it('of "10–20 teaspoon water"', () => {
+      expect(parse('10-20 teaspoon water')).to.deep.equal({
+        quantity: '10',
+        maxQuantity: '20',
+        unit: 'teaspoon',
+        ingredient: 'water'
+      });
+    });
+    it('of "10 – 20 teaspoon water"', () => {
+      expect(parse('10-20 teaspoon water')).to.deep.equal({
+        quantity: '10',
+        maxQuantity: '20',
+        unit: 'teaspoon',
+        ingredient: 'water'
+      });
     });
     it('of "1/2 teaspoon water"', () => {
       expect(parse('1/2 teaspoon water').quantity).to.equal('0.5');
@@ -56,6 +85,7 @@ describe('recipe parser', () => {
     it('doesn\'t freak out if a strange unicode character is present', () => {
       expect(parse('1/3 cup confectioners’ sugar')).to.deep.equal({
         quantity: '0.333',
+        maxQuantity: undefined,
         unit: 'cup',
         ingredient: 'confectioners’ sugar'
       });
@@ -127,6 +157,7 @@ describe('recipe parser', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
+        maxQuantity: undefined,
         ingredient: '(14.5 oz) tomatoes'
       });
     });
@@ -134,6 +165,7 @@ describe('recipe parser', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
         quantity: '1',
+        maxQuantity: undefined,
         ingredient: '(16 oz) pasta'
       });
     });
@@ -141,6 +173,7 @@ describe('recipe parser', () => {
       expect(parse('1 slice cheese')).to.deep.equal({
         unit: 'slice',
         quantity: '1',
+        maxQuantity: undefined,
         ingredient: 'cheese'
       });
     });
@@ -150,7 +183,8 @@ describe('recipe parser', () => {
     expect(parse('1 tortilla')).to.deep.equal({
       unit: null,
       ingredient: 'tortilla',
-      quantity: '1'
+      quantity: '1',
+      maxQuantity: undefined,
     });
   });
 
@@ -158,7 +192,8 @@ describe('recipe parser', () => {
     expect(parse('powdered sugar')).to.deep.equal({
       unit: null,
       ingredient: 'powdered sugar',
-      quantity: null
+      quantity: null,
+      maxQuantity: undefined,
     });
   });
 
@@ -262,11 +297,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'apples',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       }
     ];
@@ -274,11 +311,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'apples',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ]);
@@ -289,11 +328,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ];
@@ -301,6 +342,7 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '4',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ]);
@@ -311,16 +353,19 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ];
@@ -328,6 +373,7 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '6',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ]);
@@ -338,21 +384,25 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'apple',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       }
     ];
@@ -360,11 +410,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'apple',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       },
       {
         ingredient: 'butter',
         quantity: '6',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       }
     ]);
@@ -375,21 +427,25 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '1',
+        maxQuantity: undefined,
         unit: 'stick'
       },
       {
         ingredient: 'apple',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       }
     ];
@@ -397,16 +453,19 @@ describe('combine ingredients', () => {
       {
         ingredient: 'apple',
         quantity: '2',
+        maxQuantity: undefined,
         unit: 'pound'
       },
       {
         ingredient: 'butter',
         quantity: '4',
+        maxQuantity: undefined,
         unit: 'tablespoon'
       },
       {
         ingredient: 'butter',
         quantity: '1',
+        maxQuantity: undefined,
         unit: 'stick'
       }
     ]);
@@ -417,11 +476,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'tortilla',
         quantity: '10',
+        maxQuantity: undefined,
         unit: null
       },
       {
         ingredient: 'tortilla',
         quantity: '5',
+        maxQuantity: undefined,
         unit: null
       }
     ];
@@ -429,6 +490,7 @@ describe('combine ingredients', () => {
       {
         ingredient: 'tortilla',
         quantity: '15',
+        maxQuantity: undefined,
         unit: null
       }
     ]);
@@ -439,11 +501,13 @@ describe('combine ingredients', () => {
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
+        maxQuantity: undefined,
         unit: null
       },
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
+        maxQuantity: undefined,
         unit: null
       }
     ];
@@ -451,6 +515,7 @@ describe('combine ingredients', () => {
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
+        maxQuantity: undefined,
         unit: null
       }
     ]);
